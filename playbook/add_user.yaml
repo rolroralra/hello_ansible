@@ -1,0 +1,23 @@
+---
+- name : Create a login user
+  hosts: workers
+  gather_facts: no
+
+  # Setting
+  #vars:
+    #new_username: "username"
+    #new_password: "password"
+
+  tasks:
+  - name: Create a login user
+    user:
+      name: "{{ new_username }}"
+      password: "{{ new_password | password_hash('sha512') }}"
+      groups: # Empty by default, here we give it some groups
+      - docker
+      - sudo
+      state: present
+      shell: /bin/bash                    # Defaults to /bin/bash
+      system: no                          # Defaults to no
+      createhome: yes                     # Defaults to yes
+      home: "/home/{{ new_username }}"    # Defaults to /home/<username>
