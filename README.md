@@ -13,7 +13,7 @@
 ### Download ansible
 [https://releases.ansible.com/ansible/](https://releases.ansible.com/ansible/)
 
---
+---
 ## /etc/ansible/hosts
 ```bash
 [workers:vars]
