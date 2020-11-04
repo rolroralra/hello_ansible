@@ -1,0 +1,15 @@
+---
+- name: Check Password Expiration
+  hosts: workers
+  gather_facts: no
+
+  #vars:
+    #target_user: "rolroralra"
+
+  tasks:
+  - name: passwd command
+    shell: "chage -l {{ target_user }}"
+    register: shell_result
+  - name: check result
+    debug:
+      var: shell_result.stdout_lines
