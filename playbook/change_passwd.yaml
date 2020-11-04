@@ -1,0 +1,15 @@
+---
+- name: Change Password
+  hosts: workers
+
+  # Setting
+  #vars:
+    #target_user: "username"
+    #newpassword: "password"
+
+  tasks:
+  - name: Change Password
+    user:
+      name: "{{ target_user }}"
+      update_password: always
+      password: "{{ newpassword | password_hash('sha512') }}"
