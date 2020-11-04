@@ -1,0 +1,15 @@
+---
+- name : Remove a login user
+  hosts: workers
+  gather_facts: no
+
+  # Setting
+  #vars:
+    #delete_username: "rolroralra"
+
+  tasks:
+  - name: Remove a login user
+    user:
+      name: "{{ delete_username }}"
+      state: absent
+      remove: yes
