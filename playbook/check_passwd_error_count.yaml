@@ -1,0 +1,15 @@
+---
+- name: Check Password Error Count
+  hosts: workers
+  gather_facts: no
+
+  #vars:
+    #target_user: "rolroralra"
+
+  tasks:
+  - name: pam_tally2 command
+    shell: "pam_tally2 --user {{ target_user }}"
+    register: shell_result
+  - name: check result
+    debug:
+      var: shell_result.stdout_lines
