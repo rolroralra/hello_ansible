@@ -1,0 +1,39 @@
+---
+- name: Package Patch
+  hosts: nexledger_web
+  gather_facts: no
+  
+  # Setting
+  vars:
+    package_name: "nginx"
+    package_filename: "nginx_1.18.0-2_xenial_amd64.deb"
+    
+  tasks:
+  - name: "Copy File {{ package_filename }}"
+    copy:
+      src: "~/Share/{{ package_filename }}"
+      dest: "/tmp/{{ package_filename }}"
+      owner: root
+      group: root
+      mode: '0644'
+      backup: yes
+  - name: "Backup Configuration Directory of {{ package_name }}"
+    shell: |
+      tar -cv "{{ package_name}}_conf_$(date +%Y%m%d).tar" "{{ package_name }}"
+      exit 0
+    args:
+      chdir: /etc/
+  - name: "Uninstall Old Version {{ package_name }}"
+    shell: |
+      systemctl stop "{{ package_name }}"
+      dpkg --remove "{{ package_name }}"
+      exit 0
+  - name: "Install New Version {{ package_name }}"
+    shell: |
+      dpkg --install "{{ package_filename }}"
+      systemctl start "{{ package_name }}"
+      "{{ package_name }}" -V
+      exit 0
+    args:
+      chdir: /tmp/
+   
